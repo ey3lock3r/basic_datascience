@@ -46,11 +46,14 @@ class BasicTranslationModel:
         """
         inp_lengths = infer_length(inp, self.inp_voc.eos_ix)
         inp_emb = self.emb_inp(inp)
+        # mask_length = tf.sequence_mask(inp_lengths, dtype=inp_emb.dtype)
+        # initial_state = rnn_cell.zero_state(batch_size, dtype=tf.float32)
+        # dyn_rnn = L.RNN(self.enc0)
+        # _, enc_last = dyn_rnn(inp_emb, mask_length)
 
-        # _, enc_last = tf.nn.dynamic_rnn(
-        _, enc_last = tf.keras.layers.RNN(
+        _, enc_last = tf.nn.dynamic_rnn(
             self.enc0, inp_emb,
-            # sequence_length=inp_lengths,
+            sequence_length=inp_lengths,
             dtype=inp_emb.dtype)
 
         dec_start = self.dec_start(enc_last)
