@@ -47,9 +47,10 @@ class BasicTranslationModel:
         inp_lengths = infer_length(inp, self.inp_voc.eos_ix)
         inp_emb = self.emb_inp(inp)
 
-        _, enc_last = tf.nn.dynamic_rnn(
+        # _, enc_last = tf.nn.dynamic_rnn(
+        _, enc_last = tf.keras.layers.RNN(
             self.enc0, inp_emb,
-            sequence_length=inp_lengths,
+            # sequence_length=inp_lengths,
             dtype=inp_emb.dtype)
 
         dec_start = self.dec_start(enc_last)
